@@ -28,6 +28,9 @@
 #       enabled: "ON"
 
 en:
+  dry_validation:
+    errors:
+      password_mismatch: does not match password
   flash:
     passwords:
       invalid_token: Password reset link is invalid or has expired.
@@ -37,6 +40,8 @@ en:
         Password reset instructions sent (if an account with that email
         address exists).
       throttled: Try again later.
+    registrations:
+      created: Welcome to Kintide!
     sessions:
       invalid_credentials: Try another email address or password.
       throttled: Try again later.
