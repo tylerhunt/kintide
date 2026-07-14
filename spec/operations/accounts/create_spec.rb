@@ -56,4 +56,21 @@ RSpec.describe Accounts::Create do
       [:create_account, an_instance_of(Account)],
     )
   end
+
+  it 'does not report validation failures' do
+    allow(Rails.error).to receive(:report)
+
+    operation.call(**input, email_address: 'not-an-email')
+
+    expect(Rails.error).to_not have_received(:report)
+  end
+
+  it 'reports unexpected failures' do
+    allow(Rails.error).to receive(:report)
+    Account.create!(**input)
+
+    operation.call(**input)
+
+    expect(Rails.error).to have_received(:report)
+  end
 end
