@@ -1,8 +1,273 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+plugins:
+  - rubocop-rails
+  - rubocop-rake
+  - rubocop-rspec
+  - rubocop-rspec_rails
 
-# Overwrite or add rules to create your own house style
+AllCops:
+  NewCops: enable
+
 #
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+# Layout
+#
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/LineLength:
+  Enabled: true
+  Max: 79
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstMethodParameterLineBreak:
+  AllowMultilineFinalElement: true
+  Enabled: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineMethodParameterLineBreaks:
+  AllowMultilineFinalElement: true
+  Enabled: true
+
+Layout/SpaceAroundOperators:
+  EnforcedStyleForExponentOperator: space
+
+#
+# Metrics
+#
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+    - method_call
+  Exclude:
+    - 'db/migrate/*.rb'
+    - 'lib/library/jellyfin/resources/*.rb'
+
+Metrics/CyclomaticComplexity:
+  AllowedMethods: props
+
+Metrics/MethodLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+    - method_call
+  Exclude:
+    - 'db/migrate/**/*.rb'
+  Max: 15
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+Metrics/ParameterLists:
+  Enabled: false
+
+#
+# Naming
+#
+
+Naming/PredicateMethod:
+  AllowBangMethods: true
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: 'error'
+
+Naming/VariableNumber:
+  CheckSymbols: false
+  EnforcedStyle: snake_case
+
+#
+# Style
+#
+
+Style/AccessorGrouping:
+  EnforcedStyle: separated
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  AllowedPatterns:
+    - 'any?'
+    - 'bind'
+    - 'detect'
+  Exclude:
+    - 'spec/factories/**/*.rb'
+
+Style/CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    find: detect
+    map!: collect!
+    map: collect
+    reduce: inject
+
+Style/DataInheritance:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyClassDefinition:
+  EnforcedStyle: class_new
+
+Style/ExplicitBlockArgument:
+  Enabled: false
+
+Style/FormatStringToken:
+  Exclude:
+    - 'config/routes.rb'
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/GuardClause:
+  AllowConsecutiveConditionals: true
+
+Style/HashAsLastArrayItem:
+  EnforcedStyle: no_braces
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
+  Exclude:
+    - 'lib/tasks/**/*.rake'
+
+Style/Lambda:
+  EnforcedStyle: 'literal'
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+# this is often a useful way to break up long lines
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+# allow the primary branch to be a negated condition
+Style/NegatedIfElseCondition:
+  Enabled: false
+
+Style/RegexpLiteral:
+  EnforcedStyle: mixed
+
+Style/SafeNavigation:
+  Enabled: false
+
+Style/SuperWithArgsParentheses:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/UnlessElse:
+  Enabled: false
+
+#
+# Rails
+#
+
+Rails/ActionControllerFlashBeforeRender:
+  Enabled: false
+
+Rails/ActionOrder:
+ ExpectedOrder:
+   - index
+   - show
+   - new
+   - create
+   - edit
+   - update
+   - destroy
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/DeprecatedActiveModelErrorsMethods:
+  Enabled: false
+
+Rails/Delegate:
+  Exclude:
+    - 'lib/**/*.rb'
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+Rails/RakeEnvironment:
+  Enabled: false
+
+#
+# RSpec
+#
+
+RSpec/DescribedClass:
+  SkipBlocks: true
+
+RSpec/EmptyMetadata:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/LeadingSubject:
+  Enabled: false
+
+RSpec/IncludeExamples:
+  Enabled: false
+
+RSpec/MessageChain:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/system/**/*_spec.rb'
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  AllowedGroups: [describe]
+  Max: 2
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
+
+RSpec/ScatteredLet:
+  Enabled: false
+
+RSpec/ScatteredSetup:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+    IgnoreSymbolicNames: true
+
+#
+# RSpec Rails
+#
+
+RSpecRails/InferredSpecType:
+  Enabled: false

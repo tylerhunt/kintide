@@ -5,7 +5,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 
 if Rails.env.production?
-  abort "The Rails environment is running in production mode!"
+  abort 'The Rails environment is running in production mode!'
 end
 
 require 'rspec/rails'
@@ -15,8 +15,8 @@ require 'rspec/rails'
 # ensure the test database schema matches the current schema file
 begin
   ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
+rescue ActiveRecord::PendingMigrationError => error
+  abort error.to_s.strip
 end
 
 RSpec.configure do |config|
