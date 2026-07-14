@@ -12,13 +12,10 @@ require 'action_mailer/railtie'
 require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
-require 'action_cable/engine'
 
 # engines/plugins
 require 'importmap-rails'
 require 'propshaft'
-require 'solid_cable'
-require 'solid_cache'
 require 'solid_queue'
 require 'stimulus-rails'
 require 'tailwindcss-rails'
