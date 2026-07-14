@@ -31,6 +31,7 @@ group :test do
 end
 
 group :development do
+  gem 'letter_opener'
   gem 'rubocop', '~> 1.88'
   gem 'rubocop-rails', '~> 2.36'
   gem 'rubocop-rake', '~> 0.7.1'

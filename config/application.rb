@@ -20,6 +20,7 @@ require 'tailwindcss-rails'
 require 'turbo-rails'
 
 # development/debugging
+require 'letter_opener' if Rails.env.development?
 require 'rspec-rails' if Rails.env.development?
 require 'web_console' if Rails.env.development?
 
