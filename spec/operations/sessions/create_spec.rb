@@ -33,7 +33,7 @@ RSpec.describe Sessions::Create do
   it 'rejects invalid credentials' do
     result = operation.call(**input, password: 'wrong-password')
 
-    expect(result.failure).to eq([:invalid_credentials])
+    expect(result.failure).to eq(:invalid_credentials)
   end
 
   it 'does not report invalid credentials' do

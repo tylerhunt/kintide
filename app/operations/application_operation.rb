@@ -6,6 +6,10 @@ class ApplicationOperation < Dry::Operation
   # multi-write steps
   include Dry::Operation::Extensions::ActiveRecord[requires_new: true]
 
+  # Marker for failures that are expected outcomes (wrong password, record
+  # not yet available) rather than errors worth reporting.
+  IgnoreFailure = Module.new
+
   class << self
     # Per-operation contract DSL:
     #
@@ -37,7 +41,21 @@ private
 
   attr_reader :contract
 
-  def Invalid(*) = Failure[:invalid, *] # rubocop:disable Naming/MethodName
+  # Contract failures are user input errors — expected, never reported.
+  def Invalid(*details) # rubocop:disable Naming/MethodName
+    Failure[:invalid, *details].tap { |result| ignore(result.failure) }
+  end
+
+  # Marks a failure value as expected so `on_failure` skips reporting it.
+  # Symbols cannot be extended, so they are wrapped in a marked tuple.
+  def ignore(failure)
+    case failure
+    in Symbol
+      [failure, Object.new.extend(IgnoreFailure)]
+    else
+      failure.extend(IgnoreFailure)
+    end
+  end
 
   # First step of most operations: validate and coerce input.
   # Returns Success(hash of coerced params) or Failure[:invalid, errors].
@@ -49,24 +67,17 @@ private
       .or { |result| Invalid(result.errors.to_h) }
   end
 
-  # Failure reasons that are part of normal user flows. Subclasses extend
-  # this list to keep their expected failures out of error reporting:
-  #
-  #   EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
-  #   private_constant :EXPECTED_FAILURES
-  EXPECTED_FAILURES = %i[invalid].freeze
-  private_constant :EXPECTED_FAILURES
-
-  # dry-operation invokes this hook whenever a step fails. Reporting here
-  # means controllers and callers never need to log failures themselves.
-  # `const_get` is used because qualified access to a private constant
-  # raises, while `const_get` may read it and still sees subclass overrides.
+  # dry-operation invokes this hook with the failure value whenever a step
+  # fails. Reporting here means controllers and callers never need to log
+  # failures themselves.
   def on_failure(failure)
-    reason, * = failure
-    return if self.class.const_get(:EXPECTED_FAILURES).include?(reason)
-
-    Rails.error.report(
-      RuntimeError.new("#{self.class.name} failed: #{failure.inspect}"),
-    )
+    case failure
+    in IgnoreFailure | [*, IgnoreFailure]
+      # expected failure — do nothing
+    else
+      Rails.error.report(
+        RuntimeError.new("#{self.class.name} failed: #{failure.inspect}"),
+      )
+    end
   end
 end

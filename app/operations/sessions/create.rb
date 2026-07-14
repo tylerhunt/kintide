@@ -1,8 +1,5 @@
 module Sessions
   class Create < ApplicationOperation
-    EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
-    private_constant :EXPECTED_FAILURES
-
     contract do
       params do
         required(:email_address).filled(:string)
@@ -25,15 +22,22 @@ module Sessions
     def authenticate(email_address:, password:, **)
       account = Account.authenticate_by(email_address:, password:)
 
-      if account
-        Success(account)
-      else
-        Failure[:invalid_credentials]
-      end
+      account ? Success(account) : Failure(:invalid_credentials)
     end
 
     def create_session(account:, user_agent: nil, ip_address: nil, **)
       Success(account.sessions.create!(user_agent:, ip_address:))
+    end
+
+    # Wrong credentials are an expected outcome, not an error; anything
+    # else still reports through `super`.
+    def on_failure(failure)
+      case failure
+      in :invalid_credentials
+        super ignore(failure)
+      else
+        super
+      end
     end
   end
 end
