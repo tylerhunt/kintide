@@ -33,12 +33,6 @@ class ApplicationOperation < Dry::Operation
     Session = Instance(::Session)
   end
 
-  # Failure reasons that are part of normal user flows. Subclasses extend
-  # this list to keep their expected failures out of error reporting:
-  #
-  #   EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
-  EXPECTED_FAILURES = %i[invalid].freeze
-
 private
 
   attr_reader :contract
@@ -55,11 +49,21 @@ private
       .or { |result| Invalid(result.errors.to_h) }
   end
 
+  # Failure reasons that are part of normal user flows. Subclasses extend
+  # this list to keep their expected failures out of error reporting:
+  #
+  #   EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
+  #   private_constant :EXPECTED_FAILURES
+  EXPECTED_FAILURES = %i[invalid].freeze
+  private_constant :EXPECTED_FAILURES
+
   # dry-operation invokes this hook whenever a step fails. Reporting here
   # means controllers and callers never need to log failures themselves.
+  # `const_get` is used because qualified access to a private constant
+  # raises, while `const_get` may read it and still sees subclass overrides.
   def on_failure(failure)
     reason, * = failure
-    return if self.class::EXPECTED_FAILURES.include?(reason)
+    return if self.class.const_get(:EXPECTED_FAILURES).include?(reason)
 
     Rails.error.report(
       RuntimeError.new("#{self.class.name} failed: #{failure.inspect}"),

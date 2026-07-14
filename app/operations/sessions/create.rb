@@ -1,6 +1,7 @@
 module Sessions
   class Create < ApplicationOperation
     EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
+    private_constant :EXPECTED_FAILURES
 
     contract do
       params do
