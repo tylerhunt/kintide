@@ -196,6 +196,11 @@ class ApplicationOperation < Dry::Operation
   # Provides `transaction do ... end` inside `call` for atomic multi-write steps
   include Dry::Operation::Extensions::ActiveRecord[requires_new: true]
 
+  # Marker for failures that are expected outcomes (wrong password, record
+  # not yet available) rather than errors worth reporting. See "Ignoring
+  # Expected Failures" below.
+  IgnoreFailure = Module.new
+
   class << self
     # Per-operation contract DSL:
     #
@@ -225,7 +230,21 @@ private
 
   attr_reader :contract
 
-  def Invalid(*) = Failure[:invalid, *] # rubocop:disable Naming/MethodName
+  # Contract failures are user input errors — expected, never reported.
+  def Invalid(*details) # rubocop:disable Naming/MethodName
+    Failure[:invalid, *details].tap { |result| ignore(result.failure) }
+  end
+
+  # Marks a failure value as expected so `on_failure` skips reporting it.
+  # Symbols cannot be extended, so they are wrapped in a marked tuple.
+  def ignore(failure)
+    case failure
+    in Symbol
+      [failure, Object.new.extend(IgnoreFailure)]
+    else
+      failure.extend(IgnoreFailure)
+    end
+  end
 
   # First step of most operations: validate and coerce input.
   # Returns Success(hash of coerced params) or Failure[:invalid, errors].
@@ -237,21 +256,24 @@ private
       .or { |result| Invalid(result.errors.to_h) }
   end
 
-  # dry-operation invokes this hook whenever a step fails. Reporting here
-  # means controllers and callers never need to log failures themselves.
+  # dry-operation invokes this hook with the failure value whenever a step
+  # fails. Reporting here means controllers and callers never need to log
+  # failures themselves.
   def on_failure(failure)
-    Rails.error.report(
-      RuntimeError.new("#{self.class.name} failed: #{failure.inspect}"),
-    )
+    case failure
+    in IgnoreFailure | [*, IgnoreFailure]
+      # expected failure — do nothing
+    else
+      Rails.error.report(
+        RuntimeError.new("#{self.class.name} failed: #{failure.inspect}"),
+      )
+    end
   end
 end
 ```
 
 Notes:
 
-  - Expected failures (for example user validation errors) should not be
-    reported as errors. Either filter them in `on_failure` (skip `:invalid`
-    failures) or tag them with a marker module when they are anticipated.
   - Swap `Rails.error.report` for your error tracker (Sentry etc.). Register
     a reporter in the container with per-environment adapters (raise in
     development, no-op in test, Sentry in production) so failures are loud
@@ -354,6 +376,78 @@ Operations must **not**:
   - Take raw IDs when the caller can load the record — controllers load
     records through authorization scopes and pass instances; contracts
     type-check them with `Instance` types.
+
+## Ignoring Expected Failures
+
+Some failures are expected outcomes of the business process — wrong
+credentials, a webhook arriving before its record exists — and should short-
+circuit the operation like any other failure, but not page anyone. Steps stay
+oblivious: they return a plain `Failure(...)`. The operation classifies which
+failures are expected in one place, an `on_failure` override, by passing them
+through `ignore` before delegating to `super`:
+
+```ruby
+module Authentication
+  class Authenticate < ApplicationOperation
+    def call(**input)
+      output = step validate(**input)
+      user = step find_user(**output)
+      step verify_password(user:, **output)
+
+      user
+    end
+
+  private
+
+    def find_user(email:, **)
+      user = User.find_by(email:)
+
+      user ? Success(user) : Failure(:invalid_email_or_password)
+    end
+
+    # Wrong credentials are an expected outcome, not an error; anything
+    # else still reports through `super`.
+    def on_failure(failure)
+      case failure
+      in :invalid_email_or_password
+        super ignore(failure)
+      else
+        super
+      end
+    end
+
+    def verify_password(password:, user:, **)
+      user.valid_password?(password) ?
+        Success(user) :
+        Failure(:invalid_email_or_password)
+    end
+  end
+end
+```
+
+The marking can be conditional. A webhook handler that tolerates missing
+records by default, but reports them when configured to:
+
+```ruby
+def on_failure(failure)
+  case failure
+  in [:find_order, _order_id]
+    super report_missing ? failure : ignore(failure)
+  else
+    super
+  end
+end
+```
+
+Properties of the pattern:
+
+  - **Ignoring affects reporting only.** The caller still receives the
+    `Failure` and pattern matches it as usual — the marker module is
+    invisible to `in Failure[:reason, ...]` patterns.
+  - **Contract failures are ignored automatically** by the `Invalid` helper:
+    invalid user input is feedback for the user, not an error to report.
+  - **The classification is auditable.** Grepping for `ignore(` lists every
+    failure the application has decided is business-as-usual.
 
 ## Controllers
 
@@ -480,6 +574,8 @@ Do:
   - Return domain objects from operations.
   - Declare dependencies with `Deps[...]`; register external clients and
     per-environment adapters in the container.
+  - Classify expected failures in an `on_failure` override with
+    `super ignore(failure)`.
   - Keep controllers to: schema, scope-loaded records, `resolve(...).call`,
     pattern match, respond.
 
