@@ -10,7 +10,9 @@ end
 
 require 'rspec/rails'
 
-# Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each do |file|
+  require file
+end
 
 # ensure the test database schema matches the current schema file
 begin
