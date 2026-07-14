@@ -28,4 +28,18 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  flash:
+    passwords:
+      invalid_token: Password reset link is invalid or has expired.
+      not_matching: Passwords did not match.
+      reset: Password has been reset.
+      sent: >-
+        Password reset instructions sent (if an account with that email
+        address exists).
+      throttled: Try again later.
+    sessions:
+      invalid_credentials: Try another email address or password.
+      throttled: Try again later.
+  passwords_mailer:
+    reset:
+      subject: Reset your password

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 8.1.3'
 
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', require: false
 gem 'dry-monads', '~> 1.9'
 gem 'dry-operation', '~> 1.0'
