@@ -15,6 +15,7 @@ CI.run do
   # if success?
   #   step "Signoff: All systems go. Ready for merge and deploy.", "gh signoff"
   # else
-  #   failure "Signoff: CI failed. Do not merge or deploy.", "Fix the issues and try again."
+  #   failure "Signoff: CI failed. Do not merge or deploy.",
+  #     "Fix the issues and try again."
   # end
 end

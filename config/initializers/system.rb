@@ -5,7 +5,7 @@ require 'dry/rails'
 class ClassLoader < Dry::System::Loader::Autoloading
   def self.call(component, *)
     require! component
-    constant(component)
+    constant component
   end
 end
 
