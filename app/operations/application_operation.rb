@@ -29,6 +29,7 @@ class ApplicationOperation < Dry::Operation
     include Kintide::Types
 
     # Model instances — contracts receive loaded records, not IDs
+    Account = Instance(::Account)
     Session = Instance(::Session)
   end
 

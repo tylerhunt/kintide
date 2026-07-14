@@ -34,7 +34,6 @@ en:
   flash:
     passwords:
       invalid_token: Password reset link is invalid or has expired.
-      not_matching: Passwords did not match.
       reset: Password has been reset.
       sent: >-
         Password reset instructions sent (if an account with that email

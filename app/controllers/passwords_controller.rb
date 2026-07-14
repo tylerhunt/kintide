@@ -1,4 +1,8 @@
+require 'dry/monads'
+
 class PasswordsController < ApplicationController
+  include Dry::Monads[:result]
+
   allow_unauthenticated_access
 
   before_action :set_account_by_token, only: %i[edit update]
@@ -7,24 +11,44 @@ class PasswordsController < ApplicationController
     redirect_to new_password_path, alert: t('flash.passwords.throttled')
   }
 
+  schema :new
+
   def new; end
 
-  def create
-    account = Account.find_by(email_address: params[:email_address])
-    PasswordsMailer.reset(account).deliver_later if account
-
-    redirect_to new_session_path, notice: t('flash.passwords.sent')
+  schema :create do
+    required(:email_address).filled(:string)
   end
+
+  # Invalid input gets the same response as success so that the form can't
+  # be used to enumerate accounts.
+  def create
+    case resolve('passwords.request_reset').call(**safe_params.to_h)
+    in Success(*) | Failure[:invalid, *]
+      redirect_to new_session_path, notice: t('flash.passwords.sent')
+    end
+  end
+
+  schema :edit
 
   def edit; end
 
+  schema :update do
+    required(:password).filled(:string)
+    required(:password_confirmation).filled(:string)
+  end
+
   def update
-    if @account.update(params.permit(:password, :password_confirmation))
-      @account.sessions.destroy_all
+    case resolve('passwords.update').call(
+      account: @account,
+      **safe_params.to_h,
+    )
+    in Success(*)
       redirect_to new_session_path, notice: t('flash.passwords.reset')
-    else
-      redirect_to edit_password_path(params[:token]),
-        alert: t('flash.passwords.not_matching')
+    in Failure[:invalid, errors]
+      render :edit, status: :unprocessable_content, locals: { errors: }
+    in Failure[:update_account, account]
+      render :edit, status: :unprocessable_content,
+        locals: { errors: account.errors.to_hash }
     end
   end
 
