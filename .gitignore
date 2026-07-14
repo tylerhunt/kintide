@@ -1,9 +1,6 @@
 # bundler config
 /.bundle
 
-# environment files
-/.env*
-
 # logfiles and tempfiles
 /log/*
 /tmp/*
@@ -29,3 +26,9 @@
 
 # key files for decrypting credentials and more
 /config/*.key
+
+# developer-specific configuration files
+/.env*
+/.claude/settings.local.json
+/.rspec-local
+/spec/examples.txt
