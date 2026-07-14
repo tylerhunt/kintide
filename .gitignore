@@ -28,7 +28,8 @@
 /config/*.key
 
 # developer-specific configuration files
-/.env*
+/.bates
 /.claude/settings.local.json
+/.env*
 /.rspec-local
 /spec/examples.txt
