@@ -73,10 +73,33 @@ which happens"), shared by both "tide" (season) and "tidings" (news).
   - Comments and reactions.
   - Scheduled posts and weekly digests.
 
+## Technical Decisions
+
+  - **Rails 8** on the latest stable Ruby, with **PostgreSQL**. All runtime
+    versions pinned in `.tool-versions` and managed with asdf.
+  - **Hotwire** (Turbo + Stimulus) with server-rendered pages. No separate
+    frontend application.
+  - **Tailwind CSS** via the `tailwindcss-rails` gem.
+  - **RSpec** for tests.
+  - Authentication via the **Rails 8 built-in authentication generator**
+    (sessions, password reset, bcrypt), extended with a signup flow.
+  - **Active Storage** for photo and avatar uploads, with libvips for
+    resizing variants. Local disk in development; production backend chosen
+    alongside deployment.
+  - **Solid Queue** for background jobs (SMS fan-out on publish). Runs on
+    PostgreSQL; no Redis.
+  - **Twilio** for SMS, using its built-in STOP handling and A2P 10DLC
+    registration path.
+  - **phonelib** for validating and normalizing phone numbers to E.164
+    before storage.
+  - Subscriber link tokens generated with `has_secure_token` — random opaque
+    tokens, revocable per subscription.
+  - **Deployment target: deliberately undecided.** Active Storage and Solid
+    Queue keep VPS/Kamal, Heroku, and Fly.io all open; revisit when v1
+    nears shippable.
+
 ## Open Questions
 
   - Photo limits per post (count and file size).
   - Whether the web view needs any owner-facing analytics (e.g. delivery
     status), or delivery is fire-and-forget in v1.
-  - SMS provider choice (Twilio is the default assumption for STOP handling
-    and 10DLC registration).
