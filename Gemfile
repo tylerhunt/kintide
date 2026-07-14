@@ -4,6 +4,11 @@ gem 'rails', '~> 8.1.3'
 
 # gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', require: false
+gem 'dry-monads', '~> 1.9'
+gem 'dry-operation', '~> 1.0'
+gem 'dry-rails', '~> 0.7.0'
+gem 'dry-schema', '~> 1.14'
+gem 'dry-validation', '~> 1.11'
 gem 'image_processing', '~> 1.2'
 gem 'importmap-rails'
 gem 'pg', '~> 1.1'
