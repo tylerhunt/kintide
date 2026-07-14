@@ -2,20 +2,20 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 8.1.3'
 
+# gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', require: false
+gem 'image_processing', '~> 1.2'
 gem 'importmap-rails'
 gem 'pg', '~> 1.1'
 gem 'propshaft'
 gem 'puma', '>= 5.0'
+gem 'solid_cable'
+gem 'solid_cache'
+gem 'solid_queue'
 gem 'stimulus-rails'
 gem 'tailwindcss-rails'
 gem 'thruster', require: false
 gem 'turbo-rails'
-# gem 'bcrypt', '~> 3.1.7'
-gem 'image_processing', '~> 1.2'
-gem 'solid_cable'
-gem 'solid_cache'
-gem 'solid_queue'
 
 group :development, :test do
   gem 'brakeman', require: false
