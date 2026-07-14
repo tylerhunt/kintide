@@ -41,22 +41,15 @@ private
     session.delete(:return_to_after_authenticating) || root_url
   end
 
-  def start_new_session_for(account)
-    session = account.sessions.create!(
-      user_agent: request.user_agent,
-      ip_address: request.remote_ip,
-    )
-
+  def adopt_session(session)
     Current.session = session
     cookies.signed.permanent[:session_id] = {
       value: session.id, httponly: true, same_site: :lax,
     }
-
-    session
   end
 
-  def terminate_session
-    Current.session.destroy
+  def forget_session
+    Current.session = nil
     cookies.delete(:session_id)
   end
 end

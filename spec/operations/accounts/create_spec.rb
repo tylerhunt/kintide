@@ -12,12 +12,14 @@ RSpec.describe Accounts::Create do
     }
   end
 
-  it 'creates an account' do
+  it 'creates an account with a session' do
     result = operation.call(**input)
 
     expect(result.value!).to have_attributes(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
+      account: have_attributes(
+        name: 'Tyler',
+        email_address: 'tyler@example.com',
+      ),
     )
   end
 

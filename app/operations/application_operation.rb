@@ -27,7 +27,16 @@ class ApplicationOperation < Dry::Operation
 
   module Types
     include Kintide::Types
+
+    # Model instances — contracts receive loaded records, not IDs
+    Session = Instance(::Session)
   end
+
+  # Failure reasons that are part of normal user flows. Subclasses extend
+  # this list to keep their expected failures out of error reporting:
+  #
+  #   EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
+  EXPECTED_FAILURES = %i[invalid].freeze
 
 private
 
@@ -44,12 +53,6 @@ private
       .fmap(&:to_h)
       .or { |result| Invalid(result.errors.to_h) }
   end
-
-  # Failure reasons that are part of normal user flows. Subclasses extend
-  # this list to keep their expected failures out of error reporting:
-  #
-  #   EXPECTED_FAILURES = [*EXPECTED_FAILURES, :invalid_credentials].freeze
-  EXPECTED_FAILURES = %i[invalid].freeze
 
   # dry-operation invokes this hook whenever a step fails. Reporting here
   # means controllers and callers never need to log failures themselves.

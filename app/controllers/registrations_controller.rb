@@ -17,9 +17,13 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    case resolve('accounts.create').call(**safe_params.to_h)
-    in Success(account)
-      start_new_session_for account
+    case resolve('accounts.create').call(
+      **safe_params.to_h,
+      user_agent: request.user_agent,
+      ip_address: request.remote_ip,
+    )
+    in Success(session)
+      adopt_session session
       redirect_to root_path, notice: t('flash.registrations.created')
     in Failure[:invalid, errors]
       render :new, status: :unprocessable_content, locals: { errors: }

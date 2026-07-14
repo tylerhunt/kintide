@@ -6,6 +6,8 @@ module Accounts
         required(:email_address).filled(Types::Email)
         required(:password).filled(:string, min_size?: 8)
         required(:password_confirmation).filled(:string)
+        optional(:user_agent).maybe(:string)
+        optional(:ip_address).maybe(:string)
       end
 
       rule(:password_confirmation) do
@@ -16,19 +18,29 @@ module Accounts
     def call(**input)
       output = step validate(**input)
 
-      step create_account(**output)
+      transaction do
+        account = step create_account(**output)
+
+        step create_session(account:, **output)
+      end
     end
 
   private
 
-    def create_account(**attributes)
-      account = Account.create(**attributes)
+    # The contract has already verified the confirmation matches, so the
+    # account is created from the password alone.
+    def create_account(name:, email_address:, password:, **)
+      account = Account.create(name:, email_address:, password:)
 
       if account.persisted?
         Success(account)
       else
         Failure[__method__, account]
       end
+    end
+
+    def create_session(account:, user_agent: nil, ip_address: nil, **)
+      Success(account.sessions.create!(user_agent:, ip_address:))
     end
   end
 end
