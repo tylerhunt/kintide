@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :invitations, only: %i[show new create], param: :token
   post 'invitations/:token/subscription',
     to: 'subscriptions#create', as: :invitation_subscription
-  resources :subscriptions, only: :show, param: :token
+  resources :subscriptions, only: %i[show destroy], param: :token
   resources :posts, only: %i[new create]
 
   get 'signup', to: 'registrations#new'

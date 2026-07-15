@@ -20,6 +20,9 @@ en:
     sessions:
       invalid_credentials: Try another email address or password.
       throttled: Try again later.
+    subscriptions:
+      created: You’re in! You’ll get a text for every new update.
+      deactivated: You’ve unsubscribed.
   passwords_mailer:
     reset:
       subject: Reset your password

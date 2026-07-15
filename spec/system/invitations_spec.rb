@@ -36,7 +36,8 @@ RSpec.describe 'Invitations' do
     invitation_page.accept
 
     expect(current_page).to have_current_path %r{/subscriptions/\w+}
-    expect(current_page).to have_heading 'You’re in'
+    expect(current_page).to have_flash 'You’re in!'
+    expect(current_page).to have_heading account.circle.name
 
     visit root_path
 

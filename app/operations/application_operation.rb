@@ -37,6 +37,7 @@ class ApplicationOperation < Dry::Operation
     Circle = Instance(::Circle)
     Invitation = Instance(::Invitation)
     Session = Instance(::Session)
+    Subscription = Instance(::Subscription)
 
     # Anything Active Storage can attach, whichever upload class carries it
     UploadedFile = Interface(:original_filename, :content_type, :read)

@@ -1,8 +1,20 @@
 <div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">You’re in</h1>
+  <% if notice = flash[:notice] %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
 
-  <p class="mt-4">
-    You’re now following <strong><%= subscription.circle.name %></strong>.
-    You’ll get a text whenever there’s a new update.
-  </p>
+  <h1 class="font-bold text-4xl"><%= subscription.circle.name %></h1>
+  <p class="mt-2 text-gray-500">Updates from <%= subscription.circle.account.name %></p>
+
+  <div class="mt-8 space-y-8" id="posts">
+    <% if posts.any? %>
+      <%= render partial: 'posts/post', collection: posts %>
+    <% else %>
+      <p class="text-gray-500">No updates yet.</p>
+    <% end %>
+  </div>
+
+  <div class="mt-12 border-t border-gray-200 pt-4">
+    <%= button_to "Unsubscribe", subscription_path(subscription.token), method: :delete, class: "text-sm text-gray-500 underline hover:no-underline cursor-pointer" %>
+  </div>
 </div>

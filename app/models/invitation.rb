@@ -1,3 +1,5 @@
+require 'phonelib'
+
 class Invitation < ApplicationRecord
   belongs_to :circle
 

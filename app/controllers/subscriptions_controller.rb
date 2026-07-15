@@ -10,7 +10,16 @@ class SubscriptionsController < ApplicationController
   end
 
   def show
-    render :show, locals: { subscription: }
+    if subscription.deactivated?
+      render :deactivated, locals: { subscription: }
+    else
+      render :show, locals: {
+        subscription:,
+        posts: subscription.circle.posts
+          .reverse_chronological
+          .with_attached_photos,
+      }
+    end
   end
 
   schema :create do
@@ -20,7 +29,20 @@ class SubscriptionsController < ApplicationController
   def create
     case resolve('invitations.accept').call(invitation:)
     in Success(subscription)
-      redirect_to subscription_path(subscription.token)
+      redirect_to subscription_path(subscription.token),
+        notice: t('flash.subscriptions.created')
+    end
+  end
+
+  schema :destroy do
+    required(:token).filled(:string)
+  end
+
+  def destroy
+    case resolve('subscriptions.deactivate').call(subscription:)
+    in Success(subscription)
+      redirect_to subscription_path(subscription.token),
+        notice: t('flash.subscriptions.deactivated')
     end
   end
 

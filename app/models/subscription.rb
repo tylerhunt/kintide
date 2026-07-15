@@ -8,4 +8,6 @@ class Subscription < ApplicationRecord
   validates :phone_number, presence: true, uniqueness: { scope: :circle_id }
 
   scope :active, -> { where(deactivated_at: nil) }
+
+  def deactivated? = deactivated_at.present?
 end
