@@ -23,6 +23,14 @@ RSpec.describe Accounts::Create do
     )
   end
 
+  it 'creates a circle named after the account' do
+    result = operation.call(**input)
+
+    expect(result.value!.account.circle).to have_attributes(
+      name: "Tyler's Circle",
+    )
+  end
+
   it 'rejects an invalid email address' do
     result = operation.call(**input, email_address: 'not-an-email')
 

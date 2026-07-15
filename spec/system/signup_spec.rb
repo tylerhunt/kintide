@@ -11,6 +11,7 @@ RSpec.describe 'Signup', type: :system do
     click_on 'Sign up'
 
     expect(page).to have_content('Welcome, Tyler')
+    expect(page).to have_content("Tyler's Circle")
   end
 
   it 'shows errors for a mismatched password confirmation' do

@@ -20,6 +20,7 @@ module Accounts
 
       transaction do
         account = step create_account(**output)
+        step create_circle(account:)
 
         step create_session(account:, **output)
       end
@@ -37,6 +38,12 @@ module Accounts
       else
         Failure[__method__, account]
       end
+    end
+
+    # Every account owns exactly one circle, named after the account until
+    # renaming arrives in settings.
+    def create_circle(account:)
+      Success(account.create_circle!(name: "#{account.name}'s Circle"))
     end
 
     def create_session(account:, user_agent: nil, ip_address: nil, **)

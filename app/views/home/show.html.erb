@@ -3,7 +3,8 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Welcome, <%= Current.account.name %></h1>
+  <h1 class="font-bold text-4xl"><%= Current.account.circle.name %></h1>
+  <p class="mt-2 text-gray-500">Welcome, <%= Current.account.name %></p>
 
   <div class="mt-8">
     <%= button_to "Sign out", session_path, method: :delete, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium cursor-pointer" %>
