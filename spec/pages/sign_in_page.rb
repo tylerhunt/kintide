@@ -3,8 +3,8 @@ require 'pages/test_page'
 
 class SignInPage < TestPage
   class Form < TestForm
-    field :email_address, 'email_address'
-    field :password, 'password'
+    field :email_address, 'Email address'
+    field :password, 'Password'
     submit 'Sign in'
   end
 

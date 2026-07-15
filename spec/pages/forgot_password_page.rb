@@ -3,7 +3,7 @@ require 'pages/test_page'
 
 class ForgotPasswordPage < TestPage
   class Form < TestForm
-    field :email_address, 'email_address'
+    field :email_address, 'Email address'
     submit 'Email reset instructions'
   end
 

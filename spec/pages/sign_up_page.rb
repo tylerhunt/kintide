@@ -3,10 +3,10 @@ require 'pages/test_page'
 
 class SignUpPage < TestPage
   class Form < TestForm
-    field :name, 'name'
-    field :email_address, 'email_address'
-    field :password, 'password'
-    field :password_confirmation, 'password_confirmation'
+    field :name, 'Name'
+    field :email_address, 'Email address'
+    field :password, 'Password'
+    field :password_confirmation, 'Confirm password'
     submit 'Sign up'
   end
 

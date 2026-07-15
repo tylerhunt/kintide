@@ -3,8 +3,8 @@ require 'pages/test_page'
 
 class ResetPasswordPage < TestPage
   class Form < TestForm
-    field :password, 'password'
-    field :password_confirmation, 'password_confirmation'
+    field :password, 'New password'
+    field :password_confirmation, 'Confirm new password'
     submit 'Save'
   end
 
