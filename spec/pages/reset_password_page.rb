@@ -8,6 +8,10 @@ class ResetPasswordPage < TestPage
     submit 'Save'
   end
 
+  def visit(token:)
+    super edit_password_path(token)
+  end
+
   def within_form
     within 'form' do
       yield Form.new

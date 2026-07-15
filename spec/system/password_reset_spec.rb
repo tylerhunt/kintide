@@ -43,7 +43,7 @@ RSpec.describe 'Password reset' do
   end
 
   it 'rejects an invalid reset token' do
-    reset_password_page.visit edit_password_path('bogus-token')
+    reset_password_page.visit token: 'bogus-token'
 
     expect(current_page).to have_flash 'invalid or has expired'
   end
