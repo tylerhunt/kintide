@@ -28,6 +28,8 @@ en:
     reset:
       subject: Reset your password
   sms:
+    shares:
+      deliver: '%{author} posted an update to %{circle}: %{url}'
     subscriptions:
       invite: >-
         %{inviter} invited you to follow %{circle} on Kintide. Accept

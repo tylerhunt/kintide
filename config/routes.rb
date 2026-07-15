@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   delete 'subscriptions/:token' => 'subscriptions#destroy',
     as: :remove_subscription
 
-  # subscriber entry point, kept short for SMS
+  # subscriber entry points, kept short for SMS
+  get 'p/:token' => 'shares#show', as: :share
   get 's/:token' => 'subscriptions#show', as: :subscription
   post 's/:token/accept' => 'subscriptions#accept',
     as: :accept_subscription

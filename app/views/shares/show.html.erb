@@ -1,0 +1,12 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl"><%= share.post.circle.name %></h1>
+  <p class="mt-2 text-gray-500">An update from <%= share.post.circle.account.name %></p>
+
+  <div class="mt-8" id="post">
+    <%= render 'posts/post', post: share.post %>
+  </div>
+
+  <div class="mt-8">
+    <%= link_to "See all updates", subscription_path(share.subscription.token), class: "text-gray-700 underline hover:no-underline" %>
+  </div>
+</div>

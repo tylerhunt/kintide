@@ -5,6 +5,8 @@ class Subscription < ApplicationRecord
 
   belongs_to :circle
 
+  has_many :shares, dependent: :destroy
+
   has_secure_token
 
   normalizes :phone_number,

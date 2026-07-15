@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_192541) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_195746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -81,6 +81,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_192541) do
     t.index ["account_id"], name: "index_sessions_on_account_id"
   end
 
+  create_table "shares", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "delivered_at"
+    t.uuid "post_id", null: false
+    t.uuid "subscription_id", null: false
+    t.text "token", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "subscription_id"], name: "index_shares_on_post_id_and_subscription_id", unique: true
+    t.index ["post_id"], name: "index_shares_on_post_id"
+    t.index ["subscription_id"], name: "index_shares_on_subscription_id"
+    t.index ["token"], name: "index_shares_on_token", unique: true
+  end
+
   create_table "subscriptions", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
     t.datetime "accepted_at"
     t.uuid "circle_id", null: false
@@ -101,5 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_192541) do
   add_foreign_key "circles", "accounts"
   add_foreign_key "posts", "circles"
   add_foreign_key "sessions", "accounts"
+  add_foreign_key "shares", "posts"
+  add_foreign_key "shares", "subscriptions"
   add_foreign_key "subscriptions", "circles"
 end

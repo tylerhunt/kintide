@@ -1,5 +1,7 @@
 module Posts
   class Publish < ApplicationOperation
+    include Kintide::Deps['shares.delivery_job']
+
     contract do
       params do
         required(:circle).filled(Types::Circle)
@@ -11,7 +13,16 @@ module Posts
     def call(**input)
       output = step validate(**input)
 
-      step create_post(**output)
+      post, shares = transaction do
+        post = step create_post(**output)
+        shares = step create_shares(post:)
+
+        [post, shares]
+      end
+
+      step deliver_shares(shares:)
+
+      post
     end
 
   private
@@ -24,6 +35,20 @@ module Posts
       else
         Failure[__method__, post]
       end
+    end
+
+    def create_shares(post:)
+      shares = post.circle.subscriptions.active.collect { |subscription|
+        post.shares.create!(subscription:)
+      }
+
+      Success(shares)
+    end
+
+    def deliver_shares(shares:)
+      jobs = shares.collect { |share| delivery_job.perform_later(share) }
+
+      Success(jobs)
     end
   end
 end

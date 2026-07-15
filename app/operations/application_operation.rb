@@ -36,6 +36,7 @@ class ApplicationOperation < Dry::Operation
     Account = Instance(::Account)
     Circle = Instance(::Circle)
     Session = Instance(::Session)
+    Share = Instance(::Share)
     Subscription = Instance(::Subscription)
 
     # Anything Active Storage can attach, whichever upload class carries it

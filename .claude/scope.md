@@ -21,6 +21,9 @@ which happens"), shared by both "tide" (season) and "tidings" (news).
   - **Subscription** — determines who receives updates. Lifecycle states:
     invited → active → deactivated. Subscribers do not have accounts.
   - **Post** — text plus one or more photos, published to a circle.
+  - **Share** — one post delivered to one subscriber, with its own link;
+    the post SMS points at the share, which tees up per-subscriber
+    replies.
 
 ## v1 Scope
 
@@ -53,8 +56,10 @@ which happens"), shared by both "tide" (season) and "tidings" (news).
 
 ### Subscriber Web View
 
-  - The SMS link opens a mobile-friendly web page showing the circle's posts
-    (full archive, not just the newest post).
+  - Each post's SMS links to that post's share page, which identifies the
+    subscriber and links onward to the circle's full archive.
+  - The subscription's own link carries the lifecycle: accepting the
+    invitation, the archive, and unsubscribing.
   - Links carry a per-subscriber token rather than a per-post token, so one
     person's access can be revoked without breaking anyone else's links.
   - Tokens are bearer credentials: forwarding a link shares access. This is

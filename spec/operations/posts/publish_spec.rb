@@ -39,6 +39,23 @@ RSpec.describe Posts::Publish do
     expect(result).to be_success
   end
 
+  it 'shares the post with active subscribers only' do
+    active = create(:subscription, :active, circle:)
+    create(:subscription, circle:)
+    create(:subscription, :deactivated, circle:)
+
+    result = operation.call(**input)
+
+    expect(result.value!.shares.collect(&:subscription)).to eq([active])
+  end
+
+  it 'enqueues a delivery job for each share' do
+    create(:subscription, :active, circle:)
+
+    expect { operation.call(**input) }
+      .to have_enqueued_job(Shares::DeliveryJob).once
+  end
+
   it 'rejects a blank body' do
     result = operation.call(**input, body: '')
 

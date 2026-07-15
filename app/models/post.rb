@@ -1,6 +1,8 @@
 class Post < ApplicationRecord
   belongs_to :circle
 
+  has_many :shares, dependent: :destroy
+
   has_many_attached :photos do |attachable|
     attachable.variant :feed, resize_to_limit: [800, 800]
   end
