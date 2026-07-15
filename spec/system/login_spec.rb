@@ -1,25 +1,35 @@
 require 'rails_helper'
+require 'pages/current_page'
+require 'pages/sign_in_page'
 
 RSpec.describe 'Login' do
+  let(:current_page) { CurrentPage.new }
+  let(:sign_in_page) { SignInPage.new }
+
   let!(:account) { create(:account) }
 
   it 'signs in with valid credentials' do
-    visit new_session_path
+    sign_in_page.visit
 
-    fill_in 'email_address', with: account.email_address
-    fill_in 'password', with: account.password
-    click_on 'Sign in'
+    sign_in_page.within_form do |form|
+      form.email_address = account.email_address
+      form.password = account.password
+      form.submit
+    end
 
-    expect(page).to_not have_current_path(new_session_path)
+    expect(current_page).to have_heading account.circle.name
   end
 
   it 'rejects invalid credentials' do
-    visit new_session_path
+    sign_in_page.visit
 
-    fill_in 'email_address', with: account.email_address
-    fill_in 'password', with: 'wrong-password'
-    click_on 'Sign in'
+    sign_in_page.within_form do |form|
+      form.email_address = account.email_address
+      form.password = 'wrong-password'
+      form.submit
+    end
 
-    expect(page).to have_content('Try another email address or password.')
+    expect(current_page)
+      .to have_flash 'Try another email address or password.'
   end
 end

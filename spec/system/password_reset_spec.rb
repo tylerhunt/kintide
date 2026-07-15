@@ -1,7 +1,14 @@
 require 'rails_helper'
+require 'pages/current_page'
+require 'pages/forgot_password_page'
+require 'pages/reset_password_page'
 
 RSpec.describe 'Password reset' do
   include ActiveJob::TestHelper
+
+  let(:current_page) { CurrentPage.new }
+  let(:forgot_password_page) { ForgotPasswordPage.new }
+  let(:reset_password_page) { ResetPasswordPage.new }
 
   let!(:account) { create(:account) }
 
@@ -10,36 +17,35 @@ RSpec.describe 'Password reset' do
   end
 
   it 'resets the password from an emailed link' do
-    visit new_session_path
-    click_on 'Forgot password?'
+    forgot_password_page.visit
 
-    expect(page).to have_content('Forgot your password?')
+    forgot_password_page.within_form do |form|
+      form.email_address = account.email_address
+      form.submit
+    end
 
-    fill_in 'email_address', with: account.email_address
-    click_on 'Email reset instructions'
-
-    expect(page).to have_content('Password reset instructions sent')
+    expect(current_page).to have_flash 'Password reset instructions sent'
 
     perform_enqueued_jobs
 
     mail = ActionMailer::Base.deliveries.last
     path = mail.text_part.decoded[%r{://[^/]+(/passwords/\S+/edit)}, 1]
-    visit path
+    reset_password_page.visit path
 
-    fill_in 'password', with: 'new-sekret-password'
-    fill_in 'password_confirmation', with: 'new-sekret-password'
-    click_on 'Save'
+    reset_password_page.within_form do |form|
+      form.password = 'new-sekret-password'
+      form.password_confirmation = 'new-sekret-password'
+      form.submit
+    end
 
-    fill_in 'email_address', with: account.email_address
-    fill_in 'password', with: 'new-sekret-password'
-    click_on 'Sign in'
+    current_page.sign_in account, password: 'new-sekret-password'
 
-    expect(page).to have_content("Welcome, #{account.name}")
+    expect(current_page).to have_heading account.circle.name
   end
 
   it 'rejects an invalid reset token' do
-    visit edit_password_path('bogus-token')
+    reset_password_page.visit edit_password_path('bogus-token')
 
-    expect(page).to have_content('invalid or has expired')
+    expect(current_page).to have_flash 'invalid or has expired'
   end
 end
