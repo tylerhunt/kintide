@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Signup', type: :system do
+RSpec.describe 'Signup' do
   it 'creates an account and signs in' do
     visit signup_path
 

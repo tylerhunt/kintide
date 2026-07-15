@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Password reset', type: :system do
+RSpec.describe 'Password reset' do
   include ActiveJob::TestHelper
 
   let!(:account) { create(:account) }

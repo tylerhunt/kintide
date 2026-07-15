@@ -10,7 +10,7 @@ end
 
 require 'rspec/rails'
 
-Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each do |file|
+Rails.root.glob('spec/support/**/*.rb').sort.each do |file|
   require file
 end
 
@@ -22,7 +22,9 @@ rescue ActiveRecord::PendingMigrationError => error
 end
 
 RSpec.configure do |config|
-  config.fixture_paths = [Rails.root.join('spec/fixtures')]
   config.use_transactional_fixtures = true
+  config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end

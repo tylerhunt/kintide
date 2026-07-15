@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Login', type: :system do
+RSpec.describe 'Login' do
   let!(:account) { create(:account) }
 
   it 'signs in with valid credentials' do
