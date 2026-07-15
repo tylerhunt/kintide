@@ -16,8 +16,10 @@ which happens"), shared by both "tide" (season) and "tidings" (news).
   - **Circle** — a named group owned by an account (e.g. "The Hunts"). Holds
     the account's posts and subscribers. One circle per account in v1.
   - **Invitation** — an offer to join a circle, sent to a phone number.
-  - **Subscription** — created when an invitation is accepted. Determines who
-    receives updates. Subscribers do not have accounts.
+    Modeled as the `invited` state of a subscription; the invite link is
+    the subscription link.
+  - **Subscription** — determines who receives updates. Lifecycle states:
+    invited → active → deactivated. Subscribers do not have accounts.
   - **Post** — text plus one or more photos, published to a circle.
 
 ## v1 Scope

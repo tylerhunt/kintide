@@ -35,7 +35,6 @@ class ApplicationOperation < Dry::Operation
     # Model instances — contracts receive loaded records, not IDs
     Account = Instance(::Account)
     Circle = Instance(::Circle)
-    Invitation = Instance(::Invitation)
     Session = Instance(::Session)
     Subscription = Instance(::Subscription)
 

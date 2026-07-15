@@ -1,12 +1,15 @@
 class CreateSubscriptions < ActiveRecord::Migration[8.1]
   def change
+    create_enum :subscription_states, %w[invited active deactivated]
+
     create_table :subscriptions, id: :uuid, default: 'uuidv7()' do |t|
-      t.references :invitation, null: false, foreign_key: true, type: :uuid,
-        index: { unique: true }
       t.references :circle, null: false, foreign_key: true, type: :uuid
       t.text :name, null: false
       t.text :phone_number, null: false
       t.text :token, null: false
+      t.enum :state, enum_type: :subscription_states, default: 'invited',
+        null: false
+      t.datetime :accepted_at
       t.datetime :deactivated_at
 
       t.timestamps

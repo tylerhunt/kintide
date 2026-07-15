@@ -6,7 +6,7 @@ RSpec.describe 'Subscriber archive' do
   let(:archive_page) { ArchivePage.new }
   let(:current_page) { CurrentPage.new }
 
-  let(:subscription) { create(:subscription) }
+  let(:subscription) { create(:subscription, :active) }
 
   before do
     create(

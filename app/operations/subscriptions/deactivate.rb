@@ -17,10 +17,13 @@ module Subscriptions
   private
 
     # Deactivating twice is harmless and keeps the original timestamp.
+    # Invited subscriptions can deactivate too: a STOP reply must always
+    # work, accepted or not.
     def deactivate_subscription(subscription:)
-      unless subscription.deactivated?
-        subscription.update!(deactivated_at: clock.call)
-      end
+      return Success(subscription) if subscription.deactivated?
+
+      subscription.deactivated_at = clock.call
+      subscription.deactivate!
 
       Success(subscription)
     end

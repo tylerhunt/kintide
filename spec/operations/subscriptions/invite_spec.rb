@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Invitations::Create do
+RSpec.describe Subscriptions::Invite do
   subject(:operation) { described_class.new(sms:) }
 
   let(:sms) { Kintide::SMS::TestAdapter.new }
@@ -15,7 +15,7 @@ RSpec.describe Invitations::Create do
     }
   end
 
-  it 'creates the invitation with a normalized phone number' do
+  it 'creates an invited subscription with a normalized phone number' do
     result = operation.call(**input)
 
     expect(result.value!).to have_attributes(
@@ -25,12 +25,18 @@ RSpec.describe Invitations::Create do
     )
   end
 
-  it 'delivers an SMS with the accept link' do
+  it 'starts in the invited state' do
+    result = operation.call(**input)
+
+    expect(result.value!).to be_invited
+  end
+
+  it 'delivers an SMS with the subscription link' do
     result = operation.call(**input)
 
     expect(sms.deliveries.last).to have_attributes(
       to: '+12125550123',
-      body: include(result.value!.token),
+      body: include("/s/#{result.value!.token}"),
     )
   end
 
@@ -42,13 +48,13 @@ RSpec.describe Invitations::Create do
     )
   end
 
-  it 'rejects a phone number already invited to the circle' do
+  it 'rejects a phone number already in the circle' do
     operation.call(**input)
 
     result = operation.call(**input, name: 'Also June')
 
     expect(result.failure).to match(
-      [:create_invitation, an_instance_of(Invitation)],
+      [:create_subscription, an_instance_of(Subscription)],
     )
   end
 end

@@ -1,8 +1,19 @@
 FactoryBot.define do
   factory :subscription do
-    invitation factory: %i[invitation accepted]
-    circle { invitation.circle }
-    name { invitation.name }
-    phone_number { invitation.phone_number }
+    circle
+    name { Faker::Name.name }
+    sequence(:phone_number) { |n| "+1212555#{format('%04d', 100 + n)}" }
+
+    trait :active do
+      state { 'active' }
+      accepted_at { Time.current }
+    end
+
+    trait :deactivated do
+      active
+
+      state { 'deactivated' }
+      deactivated_at { Time.current }
+    end
   end
 end

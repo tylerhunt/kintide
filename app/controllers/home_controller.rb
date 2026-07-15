@@ -6,7 +6,7 @@ class HomeController < ApplicationController
 
     render :show, locals: {
       posts: circle.posts.reverse_chronological.with_attached_photos,
-      invitations: circle.invitations.order(:created_at),
+      subscriptions: circle.subscriptions.order(:created_at),
     }
   end
 end

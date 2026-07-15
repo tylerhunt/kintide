@@ -1,10 +1,18 @@
 Rails.application.routes.draw do
   root 'home#show'
 
-  resources :invitations, only: %i[show new create destroy], param: :token
-  post 'invitations/:token/subscription',
-    to: 'subscriptions#create', as: :invitation_subscription
-  resources :subscriptions, only: %i[show destroy], param: :token
+  # circle owner
+  get 'invite' => 'subscriptions#new', as: :new_subscription
+  post 'invite' => 'subscriptions#create', as: :subscriptions
+  delete 'subscriptions/:token' => 'subscriptions#destroy',
+    as: :remove_subscription
+
+  # subscriber entry point, kept short for SMS
+  get 's/:token' => 'subscriptions#show', as: :subscription
+  post 's/:token/accept' => 'subscriptions#accept',
+    as: :accept_subscription
+  delete 's/:token' => 'subscriptions#deactivate',
+    as: :deactivate_subscription
   resources :posts, only: %i[new create]
 
   get 'signup', to: 'registrations#new'

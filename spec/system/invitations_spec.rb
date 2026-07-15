@@ -35,7 +35,7 @@ RSpec.describe 'Invitations' do
     visit delivery.body[%r{https?://\S+}]
     invitation_page.accept
 
-    expect(current_page).to have_current_path %r{/subscriptions/\w+}
+    expect(current_page).to have_current_path %r{/s/\w+}
     expect(current_page).to have_flash 'You’re in!'
     expect(current_page).to have_heading account.circle.name
 
@@ -46,7 +46,7 @@ RSpec.describe 'Invitations' do
   end
 
   it 'removes a pending invitation' do
-    create(:invitation, circle: account.circle, name: 'Uncle Ray')
+    create(:subscription, circle: account.circle, name: 'Uncle Ray')
 
     current_page.sign_in account
     home_page.remove_subscriber 'Uncle Ray'

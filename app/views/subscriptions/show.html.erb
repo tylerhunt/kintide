@@ -15,6 +15,6 @@
   </div>
 
   <div class="mt-12 border-t border-gray-200 pt-4">
-    <%= button_to "Unsubscribe", subscription_path(subscription.token), method: :delete, class: "text-sm text-gray-500 underline hover:no-underline cursor-pointer" %>
+    <%= button_to "Unsubscribe", deactivate_subscription_path(subscription.token), method: :delete, class: "text-sm text-gray-500 underline hover:no-underline cursor-pointer" %>
   </div>
 </div>

@@ -4,10 +4,6 @@ en:
       invalid_phone_number: is not a valid phone number
       password_mismatch: does not match password
   flash:
-    invitations:
-      accepted: That invitation was already accepted.
-      created: Invitation sent.
-      destroyed: Invitation removed.
     passwords:
       invalid_token: Password reset link is invalid or has expired.
       reset: Password has been reset.
@@ -23,13 +19,16 @@ en:
       invalid_credentials: Try another email address or password.
       throttled: Try again later.
     subscriptions:
+      accepted: That invitation was already accepted.
       created: You’re in! You’ll get a text for every new update.
       deactivated: You’ve unsubscribed.
+      invited: Invitation sent.
+      removed: Invitation removed.
   passwords_mailer:
     reset:
       subject: Reset your password
   sms:
-    invitations:
+    subscriptions:
       invite: >-
         %{inviter} invited you to follow %{circle} on Kintide. Accept
         here: %{url}
