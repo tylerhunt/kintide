@@ -13,10 +13,14 @@ RSpec.describe 'Password reset' do
     visit new_session_path
     click_on 'Forgot password?'
 
+    expect(page).to have_content('Forgot your password?')
+
     fill_in 'email_address', with: account.email_address
-    perform_enqueued_jobs do
-      click_on 'Email reset instructions'
-    end
+    click_on 'Email reset instructions'
+
+    expect(page).to have_content('Password reset instructions sent')
+
+    perform_enqueued_jobs
 
     mail = ActionMailer::Base.deliveries.last
     path = mail.text_part.decoded[%r{://[^/]+(/passwords/\S+/edit)}, 1]
