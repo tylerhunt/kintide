@@ -3,13 +3,7 @@ require 'rails_helper'
 RSpec.describe Sessions::Destroy do
   subject(:operation) { described_class.new }
 
-  let(:account) do
-    Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
-  end
+  let(:account) { create(:account) }
 
   let(:session) { account.sessions.create! }
 

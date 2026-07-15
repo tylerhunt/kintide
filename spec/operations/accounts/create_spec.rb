@@ -58,7 +58,7 @@ RSpec.describe Accounts::Create do
   end
 
   it 'rejects a taken email address' do
-    Account.create!(**input)
+    create(:account)
 
     result = operation.call(**input)
 
@@ -77,7 +77,7 @@ RSpec.describe Accounts::Create do
 
   it 'reports unexpected failures' do
     allow(Rails.error).to receive(:report)
-    Account.create!(**input)
+    create(:account)
 
     operation.call(**input)
 

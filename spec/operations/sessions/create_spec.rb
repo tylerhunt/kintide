@@ -4,11 +4,7 @@ RSpec.describe Sessions::Create do
   subject(:operation) { described_class.new }
 
   before do
-    Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
+    create(:account)
   end
 
   let(:input) do

@@ -35,6 +35,7 @@ module Kintide
     # configure generators
     config.generators do |generate|
       # hooks
+      generate.fixture_replacement :factory_bot, dir: 'spec/factories'
       generate.orm :active_record, primary_key_type: :uuid
       generate.system_tests :rspec
 

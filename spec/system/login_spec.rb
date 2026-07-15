@@ -2,12 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Login', type: :system do
   before do
-    account = Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
-    account.create_circle!(name: "Tyler's Circle")
+    create(:account)
   end
 
   it 'signs in with valid credentials' do

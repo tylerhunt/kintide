@@ -6,12 +6,7 @@ RSpec.describe 'Password reset', type: :system do
   before do
     ActionMailer::Base.deliveries.clear
 
-    account = Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
-    account.create_circle!(name: "Tyler's Circle")
+    create(:account)
   end
 
   it 'resets the password from an emailed link' do

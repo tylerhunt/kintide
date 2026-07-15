@@ -27,11 +27,7 @@ RSpec.describe 'Signup', type: :system do
   end
 
   it 'shows errors for a taken email address' do
-    Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
+    create(:account)
 
     visit signup_path
 

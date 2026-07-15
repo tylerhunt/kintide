@@ -13,11 +13,7 @@ RSpec.describe Passwords::RequestReset do
   end
 
   it 'delivers reset instructions to a known email address' do
-    account = Account.create!(
-      name: 'Tyler',
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
-    )
+    account = create(:account)
 
     operation.call(email_address: 'tyler@example.com')
 
