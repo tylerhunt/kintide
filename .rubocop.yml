@@ -228,6 +228,17 @@ Rails/RakeEnvironment:
 # RSpec
 #
 
+RSpec:
+  Language:
+    Examples:
+      Regular:
+        - it
+        - specify
+        - example
+        - scenario
+        - its
+        - they
+
 RSpec/DescribedClass:
   SkipBlocks: true
 
