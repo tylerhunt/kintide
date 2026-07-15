@@ -10,8 +10,10 @@ class CurrentPage < TestPage
     has_css?('#notice, #alert', text: message, **)
   end
 
+  # Headings match exactly: substring matching let "You’re in" match a
+  # page headed "You’re invited".
   def has_heading?(text, element: 'h1', **)
-    has_css?(element, text:, **)
+    has_css?(element, text:, exact_text: true, **)
   end
 
   def sign_in(
