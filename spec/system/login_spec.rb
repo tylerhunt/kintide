@@ -1,15 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Login', type: :system do
-  before do
-    create(:account)
-  end
+  let!(:account) { create(:account) }
 
   it 'signs in with valid credentials' do
     visit new_session_path
 
-    fill_in 'email_address', with: 'tyler@example.com'
-    fill_in 'password', with: 'sekret-password'
+    fill_in 'email_address', with: account.email_address
+    fill_in 'password', with: account.password
     click_on 'Sign in'
 
     expect(page).to_not have_current_path(new_session_path)
@@ -18,7 +16,7 @@ RSpec.describe 'Login', type: :system do
   it 'rejects invalid credentials' do
     visit new_session_path
 
-    fill_in 'email_address', with: 'tyler@example.com'
+    fill_in 'email_address', with: account.email_address
     fill_in 'password', with: 'wrong-password'
     click_on 'Sign in'
 

@@ -58,9 +58,9 @@ RSpec.describe Accounts::Create do
   end
 
   it 'rejects a taken email address' do
-    create(:account)
+    account = create(:account)
 
-    result = operation.call(**input)
+    result = operation.call(**input, email_address: account.email_address)
 
     expect(result.failure).to match(
       [:create_account, an_instance_of(Account)],
@@ -77,9 +77,9 @@ RSpec.describe Accounts::Create do
 
   it 'reports unexpected failures' do
     allow(Rails.error).to receive(:report)
-    create(:account)
+    account = create(:account)
 
-    operation.call(**input)
+    operation.call(**input, email_address: account.email_address)
 
     expect(Rails.error).to have_received(:report)
   end

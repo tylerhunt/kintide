@@ -3,14 +3,12 @@ require 'rails_helper'
 RSpec.describe Sessions::Create do
   subject(:operation) { described_class.new }
 
-  before do
-    create(:account)
-  end
+  let(:account) { create(:account) }
 
   let(:input) do
     {
-      email_address: 'tyler@example.com',
-      password: 'sekret-password',
+      email_address: account.email_address,
+      password: account.password,
       user_agent: 'RSpec',
       ip_address: '127.0.0.1',
     }
@@ -20,7 +18,7 @@ RSpec.describe Sessions::Create do
     result = operation.call(**input)
 
     expect(result.value!).to have_attributes(
-      account: have_attributes(email_address: 'tyler@example.com'),
+      account:,
       user_agent: 'RSpec',
       ip_address: '127.0.0.1',
     )

@@ -17,7 +17,7 @@ RSpec.describe Passwords::Update do
     operation.call(**input)
 
     authenticated = Account.authenticate_by(
-      email_address: 'tyler@example.com',
+      email_address: account.email_address,
       password: 'new-sekret-password',
     )
 

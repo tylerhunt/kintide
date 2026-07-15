@@ -15,7 +15,7 @@ RSpec.describe Passwords::RequestReset do
   it 'delivers reset instructions to a known email address' do
     account = create(:account)
 
-    operation.call(email_address: 'tyler@example.com')
+    operation.call(email_address: account.email_address)
 
     expect(passwords_mailer).to have_received(:reset).with(account)
   end
