@@ -5,6 +5,7 @@ Patterns and conventions are in the `.claude/` directory:
 - [project scope](.claude/scope.md) — overall app definition and requirements
 - [operations pattern](.claude/operations.md) — used for all app logic
 - [database standards](.claude/database.md) — schema constraints and extensions
+- [testing patterns](.claude/testing.md) — test patterns
 
 ## Essential Commands
 
