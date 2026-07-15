@@ -5,8 +5,6 @@ FactoryBot.define do
     password { Faker::Internet.password(min_length: 8) }
 
     # every account owns exactly one circle, mirroring Accounts::Create
-    after(:create) do |account|
-      account.create_circle!(name: "#{account.name}’s Circle")
-    end
+    circle { association :circle, account: instance }
   end
 end
