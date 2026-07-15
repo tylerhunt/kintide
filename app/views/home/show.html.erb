@@ -33,6 +33,7 @@
               <span class="py-0.5 px-2 bg-green-50 text-green-600 text-sm rounded-full">Subscribed</span>
             <% else %>
               <span class="py-0.5 px-2 bg-gray-100 text-gray-600 text-sm rounded-full">Invited</span>
+              <%= button_to "Remove", invitation_path(invitation.token), method: :delete, class: "text-sm text-gray-500 underline hover:no-underline cursor-pointer" %>
             <% end %>
           </li>
         <% end %>

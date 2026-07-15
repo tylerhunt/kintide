@@ -5,7 +5,9 @@ en:
       password_mismatch: does not match password
   flash:
     invitations:
+      accepted: That invitation was already accepted.
       created: Invitation sent.
+      destroyed: Invitation removed.
     passwords:
       invalid_token: Password reset link is invalid or has expired.
       reset: Password has been reset.

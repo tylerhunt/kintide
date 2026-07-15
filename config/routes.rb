@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'home#show'
 
-  resources :invitations, only: %i[show new create], param: :token
+  resources :invitations, only: %i[show new create destroy], param: :token
   post 'invitations/:token/subscription',
     to: 'subscriptions#create', as: :invitation_subscription
   resources :subscriptions, only: %i[show destroy], param: :token

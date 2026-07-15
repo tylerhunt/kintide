@@ -37,6 +37,9 @@ which happens"), shared by both "tide" (season) and "tidings" (news).
   - The owner invites subscribers by entering phone numbers.
   - Each invitee receives an SMS with a link to accept.
   - Accepting creates a subscription — no account or password required.
+  - Invitation links do not expire; the owner can remove a pending
+    invitation instead (which also frees the phone number for
+    re-inviting).
   - Email invitations are deferred until email delivery exists (see
     Deferred).
 

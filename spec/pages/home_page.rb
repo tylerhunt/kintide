@@ -9,9 +9,19 @@ class HomePage < TestPage
     click_on 'New post'
   end
 
+  def remove_subscriber(name)
+    within '#subscribers li', text: name do
+      click_on 'Remove'
+    end
+  end
+
   def has_subscriber?(name, status:)
     has_css?('#subscribers li', text: name) &&
       has_css?('#subscribers li', text: status)
+  end
+
+  def has_no_subscriber?(name)
+    has_no_css?('#subscribers li', text: name)
   end
 
   def has_post?(body, **)

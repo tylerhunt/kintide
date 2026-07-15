@@ -37,9 +37,27 @@ class InvitationsController < ApplicationController
     end
   end
 
+  schema :destroy do
+    required(:token).filled(:string)
+  end
+
+  def destroy
+    case resolve('invitations.destroy').call(invitation: owned_invitation)
+    in Success(*)
+      redirect_to root_path, notice: t('flash.invitations.destroyed')
+    in Failure[:accepted, *]
+      redirect_to root_path, alert: t('flash.invitations.accepted')
+    end
+  end
+
 private
 
   def invitation
     Invitation.find_by!(token: safe_params[:token])
+  end
+
+  # Owners may only remove invitations from their own circle.
+  def owned_invitation
+    Current.account.circle.invitations.find_by!(token: safe_params[:token])
   end
 end

@@ -44,4 +44,14 @@ RSpec.describe 'Invitations' do
     expect(home_page)
       .to have_subscriber 'Grandma June', status: 'Subscribed'
   end
+
+  it 'removes a pending invitation' do
+    create(:invitation, circle: account.circle, name: 'Uncle Ray')
+
+    current_page.sign_in account
+    home_page.remove_subscriber 'Uncle Ray'
+
+    expect(current_page).to have_flash 'Invitation removed.'
+    expect(home_page).to have_no_subscriber 'Uncle Ray'
+  end
 end
