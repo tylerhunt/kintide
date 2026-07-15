@@ -21,6 +21,16 @@ Dry::Rails.container do
     -> { Time.current }
   end
 
+  # The test adapter records deliveries for specs; the log adapter stands
+  # in until Twilio arrives with deployment.
+  register 'sms', memoize: true do
+    if env == 'test'
+      Kintide::SMS::TestAdapter.new
+    else
+      Kintide::SMS::LogAdapter.new
+    end
+  end
+
   config.component_dirs.add 'app/operations' do |dir|
     dir.auto_register = true
     dir.memoize = memoize
