@@ -27,21 +27,16 @@ module Kintide
       end
 
       def can_invoke?(name, context: nil)
-        event = current_state.events[name.to_s]
-
-        event && (event.guard ? event.guard.call(context) : true)
+        current_state.events[name.to_s]&.permitted?(context)
       end
 
       def invoke(name, context: nil)
         event = current_state.events[name.to_s]
 
         verify_event! name, event
-        verify_guard! name, event.guard, context if event.guard
+        verify_guard! name, event, context
 
-        self.state =
-          event.next_state.respond_to?(:call) ?
-            event.next_state.call(context) :
-            event.next_state
+        self.state = event.resolve_next_state(context)
       end
 
     protected
@@ -58,8 +53,8 @@ module Kintide
         raise Errors::InvalidEvent.new(event_name, state) unless event
       end
 
-      def verify_guard!(event_name, guard, context)
-        return if guard.call(context)
+      def verify_guard!(event_name, event, context)
+        return if event.permitted?(context)
 
         raise Errors::TransitionHalted.new(event_name, state)
       end

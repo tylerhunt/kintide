@@ -1,6 +1,13 @@
 module Kintide
   module StateMachine
-    Event = Data.define(:next_state, :guard)
+    Event = Data.define(:next_state, :guard) {
+      def permitted?(context) = guard.nil? || guard.call(context)
+
+      def resolve_next_state(context)
+        next_state.respond_to?(:call) ? next_state.call(context) : next_state
+      end
+    }
+
     State = Data.define(:events, :initial)
 
     class StateBuilder
