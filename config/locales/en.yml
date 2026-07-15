@@ -30,8 +30,11 @@
 en:
   dry_validation:
     errors:
+      invalid_phone_number: is not a valid phone number
       password_mismatch: does not match password
   flash:
+    invitations:
+      created: Invitation sent.
     passwords:
       invalid_token: Password reset link is invalid or has expired.
       reset: Password has been reset.
@@ -49,3 +52,8 @@ en:
   passwords_mailer:
     reset:
       subject: Reset your password
+  sms:
+    invitations:
+      invite: >-
+        %{inviter} invited you to follow %{circle} on Kintide. Accept
+        here: %{url}

@@ -2,10 +2,11 @@ class HomeController < ApplicationController
   schema :show
 
   def show
+    circle = Current.account.circle
+
     render :show, locals: {
-      posts: Current.account.circle.posts
-        .reverse_chronological
-        .with_attached_photos,
+      posts: circle.posts.reverse_chronological.with_attached_photos,
+      invitations: circle.invitations.order(:created_at),
     }
   end
 end

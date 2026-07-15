@@ -8,6 +8,7 @@
 
   <div class="mt-8 flex items-center gap-4">
     <%= link_to "New post", new_post_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+    <%= link_to "Invite", new_invitation_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
     <%= button_to "Sign out", session_path, method: :delete, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium cursor-pointer" %>
   </div>
 
@@ -16,6 +17,28 @@
       <%= render partial: 'posts/post', collection: posts %>
     <% else %>
       <p class="text-gray-500">No posts yet. Share your first update!</p>
+    <% end %>
+  </div>
+
+  <div class="mt-8" id="subscribers">
+    <h2 class="font-bold text-2xl">Subscribers</h2>
+
+    <% if invitations.any? %>
+      <ul class="mt-4 space-y-2">
+        <% invitations.each do |invitation| %>
+          <li class="flex items-center gap-3">
+            <span class="font-medium"><%= invitation.name %></span>
+            <span class="text-gray-500"><%= invitation.phone_number %></span>
+            <% if invitation.accepted? %>
+              <span class="py-0.5 px-2 bg-green-50 text-green-600 text-sm rounded-full">Subscribed</span>
+            <% else %>
+              <span class="py-0.5 px-2 bg-gray-100 text-gray-600 text-sm rounded-full">Invited</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-gray-500">No subscribers yet. Invite someone close.</p>
     <% end %>
   </div>
 </div>

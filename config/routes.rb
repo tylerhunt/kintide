@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root 'home#show'
 
+  resources :invitations, only: %i[show new create], param: :token
+  post 'invitations/:token/subscription',
+    to: 'subscriptions#create', as: :invitation_subscription
   resources :posts, only: %i[new create]
 
   get 'signup', to: 'registrations#new'
