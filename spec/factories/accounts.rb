@@ -6,7 +6,7 @@ FactoryBot.define do
 
     # every account owns exactly one circle, mirroring Accounts::Create
     after(:create) do |account|
-      account.create_circle!(name: "#{account.name}'s Circle")
+      account.create_circle!(name: "#{account.name}’s Circle")
     end
   end
 end

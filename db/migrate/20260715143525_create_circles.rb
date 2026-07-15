@@ -13,7 +13,7 @@ class CreateCircles < ActiveRecord::Migration[8.1]
       direction.up do
         execute <<~SQL.squish
           INSERT INTO circles (id, account_id, name, created_at, updated_at)
-          SELECT uuidv7(), id, name || '''s Circle', NOW(), NOW()
+          SELECT uuidv7(), id, name || '’s Circle', NOW(), NOW()
           FROM accounts
         SQL
       end

@@ -27,7 +27,7 @@ RSpec.describe Accounts::Create do
     result = operation.call(**input)
 
     expect(result.value!.account.circle).to have_attributes(
-      name: "Tyler's Circle",
+      name: 'Tyler’s Circle',
     )
   end
 

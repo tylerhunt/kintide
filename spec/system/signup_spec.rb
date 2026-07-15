@@ -19,7 +19,7 @@ RSpec.describe 'Signup' do
 
     expect(current_page)
       .to have_flash('Welcome to Kintide!')
-      .and have_heading("Tyler's Circle")
+      .and have_heading('Tyler’s Circle')
   end
 
   it 'shows errors for a mismatched password confirmation' do

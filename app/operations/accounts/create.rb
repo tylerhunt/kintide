@@ -43,7 +43,7 @@ module Accounts
     # Every account owns exactly one circle, named after the account until
     # renaming arrives in settings.
     def create_circle(account:)
-      Success(account.create_circle!(name: "#{account.name}'s Circle"))
+      Success(account.create_circle!(name: "#{account.name}’s Circle"))
     end
 
     def create_session(account:, user_agent: nil, ip_address: nil, **)
