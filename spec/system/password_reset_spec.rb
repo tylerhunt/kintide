@@ -13,7 +13,7 @@ RSpec.describe 'Password reset' do
   let!(:account) { create(:account) }
 
   before do
-    ActionMailer::Base.deliveries.clear
+    clear_emails
   end
 
   it 'resets the password from an emailed link' do
@@ -28,9 +28,8 @@ RSpec.describe 'Password reset' do
 
     perform_enqueued_jobs
 
-    mail = ActionMailer::Base.deliveries.last
-    path = mail.text_part.decoded[%r{://[^/]+(/passwords/\S+/edit)}, 1]
-    reset_password_page.visit path
+    open_email account.email_address
+    current_email.click_link 'this password reset page'
 
     reset_password_page.within_form do |form|
       form.password = 'new-sekret-password'

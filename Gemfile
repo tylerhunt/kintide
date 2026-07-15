@@ -23,15 +23,19 @@ gem 'turbo-rails'
 group :development, :test do
   gem 'brakeman', require: false
   gem 'bundler-audit', require: false
+  gem 'launchy'
   gem 'rspec-rails'
 end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-email'
   gem 'capybara-playwright-driver'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'playwright-ruby-client'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do

@@ -11,6 +11,10 @@ end
 Capybara.configure do |config|
   config.default_max_wait_time = 5
   config.disable_animation = true
+
+  # Emailed links use the plain test host; include the server port when
+  # the browser visits them.
+  config.always_include_port = true
 end
 
 RSpec.configure do |config|
