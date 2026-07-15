@@ -34,7 +34,11 @@ class ApplicationOperation < Dry::Operation
 
     # Model instances — contracts receive loaded records, not IDs
     Account = Instance(::Account)
+    Circle = Instance(::Circle)
     Session = Instance(::Session)
+
+    # Anything Active Storage can attach, whichever upload class carries it
+    UploadedFile = Interface(:original_filename, :content_type, :read)
   end
 
 private

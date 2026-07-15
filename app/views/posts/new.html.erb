@@ -1,0 +1,21 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <%= render 'shared/errors', errors: local_assigns.fetch(:errors, {}) %>
+
+  <h1 class="font-bold text-4xl">New post</h1>
+
+  <%= form_with url: posts_path, class: "contents" do |form| %>
+    <div class="my-5">
+      <%= form.label :body, "Text", class: "block font-medium" %>
+      <%= form.text_area :body, required: true, autofocus: true, rows: 6, placeholder: "What’s been going on?", class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="my-5">
+      <%= form.label :photos, "Photos", class: "block font-medium" %>
+      <%= form.file_field :photos, multiple: true, include_hidden: false, accept: "image/*", class: "block mt-2 w-full" %>
+    </div>
+
+    <div class="inline">
+      <%= form.submit "Publish", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

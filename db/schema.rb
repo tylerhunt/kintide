@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_170929) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_171431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -60,6 +60,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_170929) do
     t.index ["account_id"], name: "index_circles_on_account_id", unique: true
   end
 
+  create_table "posts", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.text "body", null: false
+    t.uuid "circle_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["circle_id"], name: "index_posts_on_circle_id"
+  end
+
   create_table "sessions", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
     t.uuid "account_id", null: false
     t.datetime "created_at", null: false
@@ -72,5 +80,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_170929) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "circles", "accounts"
+  add_foreign_key "posts", "circles"
   add_foreign_key "sessions", "accounts"
 end

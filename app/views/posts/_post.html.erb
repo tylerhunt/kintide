@@ -1,0 +1,13 @@
+<article class="border border-gray-200 rounded-lg p-5">
+  <p class="text-sm text-gray-500"><%= l post.created_at, format: :long %></p>
+
+  <div class="mt-2 whitespace-pre-wrap"><%= post.body %></div>
+
+  <% if post.photos.attached? %>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <% post.photos.each do |photo| %>
+        <%= image_tag photo.variant(:feed), class: "rounded-md" %>
+      <% end %>
+    </div>
+  <% end %>
+</article>

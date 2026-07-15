@@ -39,6 +39,8 @@ en:
         Password reset instructions sent (if an account with that email
         address exists).
       throttled: Try again later.
+    posts:
+      published: Post published.
     registrations:
       created: Welcome to Kintide!
     sessions:

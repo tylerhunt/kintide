@@ -4,15 +4,20 @@ class TestForm
   include TestHelpers
 
   class << self
-    # Defines `#name` (read the value), `#name=` (fill in), and
-    # `#name_field` (the Capybara node) for a form field.
-    def field(name, locator)
+    # Defines `#name` (read the value), `#name=` (fill in, or attach
+    # files for `type: :file`), and `#name_field` (the Capybara node)
+    # for a form field.
+    def field(name, locator, type: :text)
       define_method name do
         find_field(locator).value
       end
 
       define_method :"#{name}=" do |value|
-        fill_in locator, with: value
+        if type == :file
+          attach_file locator, value
+        else
+          fill_in locator, with: value
+        end
       end
 
       define_method :"#{name}_field" do

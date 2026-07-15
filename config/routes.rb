@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'home#show'
 
+  resources :posts, only: %i[new create]
+
   get 'signup', to: 'registrations#new'
   post 'signup', to: 'registrations#create'
   resource :session
