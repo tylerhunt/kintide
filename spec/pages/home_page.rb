@@ -1,6 +1,10 @@
 require 'pages/test_page'
 
 class HomePage < TestPage
+  def edit_profile
+    click_on 'Edit profile'
+  end
+
   def invite
     click_on 'Invite'
   end
@@ -22,6 +26,10 @@ class HomePage < TestPage
 
   def has_no_subscriber?(name)
     has_no_css?('#subscribers li', text: name)
+  end
+
+  def has_welcome?(name)
+    has_text? "Welcome, #{name}"
   end
 
   def has_post?(body, **)

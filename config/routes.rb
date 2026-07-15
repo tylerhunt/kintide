@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   delete 's/:token' => 'subscriptions#deactivate',
     as: :deactivate_subscription
   resources :posts, only: %i[new create]
+  resource :profile, only: %i[edit update]
 
   get 'signup', to: 'registrations#new'
   post 'signup', to: 'registrations#create'

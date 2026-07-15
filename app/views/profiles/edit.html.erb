@@ -1,0 +1,24 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <%= render 'shared/errors', errors: local_assigns.fetch(:errors, {}) %>
+
+  <h1 class="font-bold text-4xl">Edit profile</h1>
+
+  <%= form_with url: profile_path, method: :patch, class: "contents" do |form| %>
+    <div class="my-5">
+      <%= form.label :name, "Name", class: "block font-medium" %>
+      <%= form.text_field :name, value: Current.account.name, required: true, autofocus: true, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="my-5">
+      <%= form.label :avatar, "Avatar", class: "block font-medium" %>
+      <% if Current.account.avatar.attached? %>
+        <%= image_tag Current.account.avatar.variant(:thumbnail), class: "mt-2 size-24 rounded-full object-cover" %>
+      <% end %>
+      <%= form.file_field :avatar, include_hidden: false, accept: "image/*", class: "block mt-2 w-full" %>
+    </div>
+
+    <div class="inline">
+      <%= form.submit "Save", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

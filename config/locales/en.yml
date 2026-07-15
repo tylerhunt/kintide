@@ -13,6 +13,8 @@ en:
       throttled: Try again later.
     posts:
       published: Post published.
+    profiles:
+      updated: Profile updated.
     registrations:
       created: Welcome to Kintide!
     sessions:
