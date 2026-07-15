@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.twilio.com/2010-04-01/Accounts/AC00000000000000000000000000000000/Messages.json
+    body:
+      encoding: UTF-8
+      string: Body=Pat+posted+an+update+to+The+Hunts.&From=%2B15005550006&To=%2B12125550100
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - twilio-ruby/7.10.7 (darwin23 arm64) Ruby/4.0.5
+      Accept-Charset:
+      - utf-8
+      Accept:
+      - application/json
+      Authorization:
+      - Basic <CREDENTIALS>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json;charset=utf-8
+      Content-Length:
+      - '798'
+      Connection:
+      - keep-alive
+      Date:
+      - Wed, 15 Jul 2026 21:31:18 GMT
+      Twilio-Concurrent-Requests:
+      - '1'
+      Twilio-Request-Id:
+      - RQ93333275197c42aa746a7317040ec6a6
+      Twilio-Request-Duration:
+      - '0.091'
+      X-Home-Region:
+      - us1
+      X-Api-Domain:
+      - api.twilio.com
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 70f841ede092a93ba19fe490030c1712.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - ORD58-P4
+      X-Amz-Cf-Id:
+      - G_h6AI-hhP69RdIASYiO9eg-X_nxoZARUKUjMcdpjJIOclONO2c-Vg==
+      X-Powered-By:
+      - AT-5000
+      X-Shenanigans:
+      - none
+      Vary:
+      - Origin
+    body:
+      encoding: UTF-8
+      string: '{"account_sid": "AC00000000000000000000000000000000", "api_version":
+        "2010-04-01", "body": "Pat posted an update to The Hunts.", "date_created":
+        "Wed, 15 Jul 2026 21:31:18 +0000", "date_sent": null, "date_updated": "Wed,
+        15 Jul 2026 21:31:18 +0000", "direction": "outbound-api", "error_code": null,
+        "error_message": null, "from": "+15005550006", "messaging_service_sid": null,
+        "num_media": "0", "num_segments": "1", "price": null, "price_unit": "USD",
+        "sid": "SM93333275197c42aa746a7317040ec6a6", "status": "queued", "subresource_uris":
+        {"media": "/2010-04-01/Accounts/AC00000000000000000000000000000000/Messages/SM93333275197c42aa746a7317040ec6a6/Media.json"},
+        "to": "+12125550100", "uri": "/2010-04-01/Accounts/AC00000000000000000000000000000000/Messages/SM93333275197c42aa746a7317040ec6a6.json"}'
+  recorded_at: Wed, 15 Jul 2026 21:31:18 GMT
+recorded_with: VCR 6.4.0

@@ -22,10 +22,17 @@ Dry::Rails.container do
   end
 
   # The test adapter records deliveries for specs; the log adapter stands
-  # in until Twilio arrives with deployment.
+  # in for Twilio in development.
   register 'sms', memoize: true do
-    if env == 'test'
+    case env
+    when 'test'
       Kintide::SMS::TestAdapter.new
+    when 'production'
+      Kintide::SMS::TwilioAdapter.new(
+        account_sid: ENV.fetch('TWILIO_ACCOUNT_SID'),
+        auth_token: ENV.fetch('TWILIO_AUTH_TOKEN'),
+        from: ENV.fetch('TWILIO_FROM'),
+      )
     else
       Kintide::SMS::LogAdapter.new
     end

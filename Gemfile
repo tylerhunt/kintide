@@ -20,6 +20,7 @@ gem 'stimulus-rails'
 gem 'tailwindcss-rails'
 gem 'thruster', require: false
 gem 'turbo-rails'
+gem 'twilio-ruby'
 
 group :development, :test do
   gem 'brakeman', require: false
