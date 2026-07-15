@@ -35,6 +35,7 @@ RSpec.describe 'Invitations' do
     visit delivery.body[%r{https?://\S+}]
     invitation_page.accept
 
+    expect(current_page).to have_current_path %r{/subscriptions/\w+}
     expect(current_page).to have_heading 'You’re in'
 
     visit root_path
