@@ -9,6 +9,8 @@ ever visible to the circle.
 The name comes from "kin" (your people) and the Old English root *tīd* ("that
 which happens"), shared by both "tide" (season) and "tidings" (news).
 
+Tagline: **Life updates for your inner circle.**
+
 ## Concepts
 
   - **Account** — an author. Has email/password credentials, a name, and an
