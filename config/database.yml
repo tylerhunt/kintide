@@ -14,10 +14,8 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: kintide_production
-    username: kintide
-    password: <%= ENV['KINTIDE_DATABASE_PASSWORD'] %>
+    url: <%= ENV['DATABASE_URL'] %>
   queue:
     <<: *primary_production
-    database: kintide_production_queue
+    url: <%= ENV['QUEUE_DATABASE_URL'] %>
     migrations_paths: db/queue_migrate
